@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wen.ftproject.entity.ApplyRole">
+	<resultMap type="com.wen.ftproject.entity.ApplyRole" id="applyRoleMapper">
+		<id property="arId" column="ar_id"/>
+		<result property="identityNumber" column="identity_number"/>
+		<result property="identityName" column="identity_name"/>
+		<result property="identityFront" column="identity_front"/>
+		<result property="identityTergal" column="identity_tergal"/>
+		<result property="isAgreed" column="is_agreed"/>
+		<result property="arCause" column="ar_cause"/>
+		<result property="arCreateDate" column="ar_create_date"/>
+		<result property="arUpdateDate" column="ar_update_date"/>
+		<result property="userId" column="user_id"/>
+		<result property="roleId" column="roleId"/>
+		<association property="role" resultMap="com.wen.ftproject.entity.Role.roleMapper"/>
+		<association property="user" resultMap="com.wen.ftproject.entity.User.userMapper"/>
+	</resultMap>
+	
+	<sql id="key">
+		<trim suffixOverrides=",">
+			<if test="arId!=null">
+				ar_id,
+			</if>
+			<if test="identityNumber!=null">
+				identity_number,
+			</if>
+			<if test="identityName!=null">
+				identity_name,
+			</if>
+			<if test="identityFront!=null">
+				identity_front,
+			</if>
+			<if test="identityTergal!=null">
+				identity_tergal,
+			</if>
+			<if test="isAgreed!=null">
+				is_agreed,
+			</if>
+			<if test="arCause!=null">
+				ar_cause,
+			</if>
+			<if test="arCreateDate!=null">
+				ar_create_date,
+			</if>
+			<if test="arUpdateDate!=null">
+				ar_update_date,
+			</if>
+			<if test="roleId!=null">
+				role_id,
+			</if>
+			<if test="userId!=null">
+				user_id,
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="value">
+		<trim suffixOverrides=",">
+			<if test="userId!=null">
+				#{userId},
+			</if>
+			<if test="identityNumber!=null">
+				#{identityNumber},
+			</if>
+			<if test="identityName!=null">
+				#{identityName},
+			</if>
+			<if test="identityFront!=null">
+				#{identityFront},
+			</if>
+			<if test="identityTergal!=null">
+				#{identityTergal},
+			</if>
+			<if test="isAgreed!=null">
+				#{isAgreed},
+			</if>
+			<if test="arCause!=null">
+				#{arCause},
+			</if>
+			<if test="arCreateDate!=null">
+				#{arCreateDate},
+			</if>
+			<if test="arUpdateDate!=null">
+				#{arUpdateDate},
+			</if>
+			<if test="userId!=null">
+				#{userId},
+			</if>
+			<if test="roleId!=null">
+				#{roleId},
+			</if>
+		</trim>
+	</sql>
+	
+	<insert id="insert" parameterType="com.wen.ftproject.entity.ApplyRole">
+		INSERT INTO apply_role(<include refid="key"/>) VALUES(<include refid="value"/>)
+	</insert>
+	
+	<update id="updateById" parameterType="com.wen.ftproject.entity.ApplyRole">
+		UPDATE apply
+			<set>
+				<trim suffixOverrides=",">
+					<if test="isAgreed!=null">
+						is_agreed=#{isAgreed},
+					</if>
+					<if test="arCause!=null">
+						at_cause=#{arCause},
+					</if>
+					<if test="arUpdateDate!=null">
+						ar_update_date=#{arUpdateDate},
+					</if>
+				</trim>
+			</set>
+			<where>
+				<if test="arId!=null">
+					ar_id=#{arId}
+				</if>
+			</where>
+	</update>
+	
+	<delete id="deleteById" parameterType="java.io.Serializable">
+		DELETE FROM apply_role WHERE ar_id=#{id}
+	</delete>
+	
+	<delete id="deleteByIds" parameterType="java.io.Serializable">
+		DELETE FROM apply_role 
+			<where>
+				ar_id IN
+				<foreach collection="ids" open="(" close=")" separator="," item="id">
+					#{id}
+				</foreach>
+			</where>
+	</delete>
+	
+	<delete id="deleteAll">
+		DELETE FROM apply_role
+	</delete>
+	
+	<select id="findAll" resultMap="applyRoleMapper">
+		SELECT ar.ar_id arId, ar.identity_number identityNumber, ar.identity_name identityName, ar.identity_front identityFront,
+			ar.identity_tergal identityTergal, ar.is_agreed isAgreed, ar.ar_cause arCause, ar.ar_create_date arCreateDate,
+			ar.ar_update_date arUpdateDate, 
+			u.user_id userId,u.u_account uAccount, u.u_nick uNick, u.u_head_port uHeadPort,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate,
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, 
+			r.r_create_date rCreateDate, r.r_update_date rUpdateDate
+			FROM apply_role ar
+			LEFT JOIN user u ON ar.user_id = u.user_id
+			LEFT JOIN role r ON ar.role_id = r.role_id
+	</select>
+	
+	<select id="findById" resultMap="applyRoleMapper" parameterType="java.io.Serializable">
+		SELECT ar.ar_id arId, ar.identity_number identityNumber, ar.identity_name identityName, ar.identity_front identityFront,
+			ar.identity_tergal identityTergal, ar.is_agreed isAgreed, ar.ar_cause arCause, ar.ar_create_date arCreateDate,
+			ar.ar_update_date arUpdateDate, 
+			u.user_id userId,u.u_account uAccount, u.u_nick uNick, u.u_head_port uHeadPort,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate,
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, 
+			r.r_create_date rCreateDate, r.r_update_date rUpdateDate
+			FROM apply_role ar
+			LEFT JOIN user u ON ar.user_id = u.user_id
+			LEFT JOIN role r ON ar.role_id = r.role_id
+			WHERE ar.ar_id = #{id}
+	</select>
+	
+	<select id="findByIds" resultMap="applyRoleMapper" parameterType="java.io.Serializable">
+		SELECT ar.ar_id arId, ar.identity_number identityNumber, ar.identity_name identityName, ar.identity_front identityFront,
+			ar.identity_tergal identityTergal, ar.is_agreed isAgreed, ar.ar_cause arCause, ar.ar_create_date arCreateDate,
+			ar.ar_update_date arUpdateDate, 
+			u.user_id userId,u.u_account uAccount, u.u_nick uNick, u.u_head_port uHeadPort,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate,
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, 
+			r.r_create_date rCreateDate, r.r_update_date rUpdateDate
+			FROM apply_role ar
+			LEFT JOIN user u ON ar.user_id = u.user_id
+			LEFT JOIN role r ON ar.role_id = r.role_id
+			<where>
+				ar.user_id IN
+				<foreach collection="ids" open="(" close=")" separator="," item="id">
+					#{id}
+				</foreach>
+			</where>
+	</select>
+	
+	<select id="findByUserId" resultMap="applyRoleMapper" parameterType="java.io.Serializable">
+		SELECT ar.ar_id arId, ar.identity_number identityNumber, ar.identity_name identityName, ar.identity_front identityFront,
+			ar.identity_tergal identityTergal, ar.is_agreed isAgreed, ar.ar_cause arCause, ar.ar_create_date arCreateDate,
+			ar.ar_update_date arUpdateDate, 
+			u.user_id userId,u.u_account uAccount, u.u_nick uNick, u.u_head_port uHeadPort,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate,
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, 
+			r.r_create_date rCreateDate, r.r_update_date rUpdateDate
+			FROM apply_role ar
+			LEFT JOIN user u ON ar.user_id = u.user_id
+			LEFT JOIN role r ON ar.role_id = r.role_id
+			WHERE ar.user_id = #{id}
+	</select>
+	
+	<select id="findByUserIds" resultMap="applyRoleMapper" parameterType="java.io.Serializable">
+		SELECT ar.ar_id arId, ar.identity_number identityNumber, ar.identity_name identityName, ar.identity_front identityFront,
+			ar.identity_tergal identityTergal, ar.is_agreed isAgreed, ar.ar_cause arCause, ar.ar_create_date arCreateDate,
+			ar.ar_update_date arUpdateDate, 
+			u.user_id userId,u.u_account uAccount, u.u_nick uNick, u.u_head_port uHeadPort,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate,
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, 
+			r.r_create_date rCreateDate, r.r_update_date rUpdateDate
+			FROM apply_role ar
+			LEFT JOIN user u ON ar.user_id = u.user_id
+			LEFT JOIN role r ON ar.role_id = r.role_id
+			<where>
+				ar.user_id IN
+				<foreach collection="ids" open="(" close=")" separator="," item="id">
+					#{id}
+				</foreach>
+			</where>
+	</select>
+	
+	<select id="findByRoleId" resultMap="applyRoleMapper" parameterType="java.io.Serializable">
+		SELECT ar.ar_id arId, ar.identity_number identityNumber, ar.identity_name identityName, ar.identity_front identityFront,
+			ar.identity_tergal identityTergal, ar.is_agreed isAgreed, ar.ar_cause arCause, ar.ar_create_date arCreateDate,
+			ar.ar_update_date arUpdateDate, 
+			u.user_id userId,u.u_account uAccount, u.u_nick uNick, u.u_head_port uHeadPort,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate,
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, 
+			r.r_create_date rCreateDate, r.r_update_date rUpdateDate
+			FROM apply_role ar
+			LEFT JOIN user u ON ar.user_id = u.user_id
+			LEFT JOIN role r ON ar.role_id = r.role_id
+			WHERE ar.role_id = #{id}
+	</select>
+	
+	<select id="findByRoleIds" resultMap="applyRoleMapper" parameterType="java.io.Serializable">
+		SELECT ar.ar_id arId, ar.identity_number identityNumber, ar.identity_name identityName, ar.identity_front identityFront,
+			ar.identity_tergal identityTergal, ar.is_agreed isAgreed, ar.ar_cause arCause, ar.ar_create_date arCreateDate,
+			ar.ar_update_date arUpdateDate, 
+			u.user_id userId,u.u_account uAccount, u.u_nick uNick, u.u_head_port uHeadPort,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate,
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, 
+			r.r_create_date rCreateDate, r.r_update_date rUpdateDate
+			FROM apply_role ar
+			LEFT JOIN user u ON ar.user_id = u.user_id
+			LEFT JOIN role r ON ar.role_id = r.role_id
+			<where>
+				ar.role_id IN
+				<foreach collection="ids" open="(" close=")" separator="," item="id">
+					#{id}
+				</foreach>
+			</where>
+	</select>
+	
+	<select id="findByPages" resultMap="applyRoleMapper" parameterType="java.util.Map">
+		SELECT ar.ar_id arId, ar.identity_number identityNumber, ar.identity_name identityName, ar.identity_front identityFront,
+			ar.identity_tergal identityTergal, ar.is_agreed isAgreed, ar.ar_cause arCause, ar.ar_create_date arCreateDate,
+			ar.ar_update_date arUpdateDate, 
+			u.user_id userId,u.u_account uAccount, u.u_nick uNick, u.u_head_port uHeadPort,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate,
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, 
+			r.r_create_date rCreateDate, r.r_update_date rUpdateDate
+			FROM apply_role ar
+			LEFT JOIN user u ON ar.user_id = u.user_id
+			LEFT JOIN role r ON ar.role_id = r.role_id
+			<where>
+				<trim  suffixOverrides=" AND">
+					<if test="content!=null">
+						<if test="content.arId!=null">
+							ar.ar_id like '%${content.arId}%' AND
+						</if>
+						<if test="content.userId!=null">
+							ar.user_id like '%${content.userId}%' AND
+						</if>
+						<if test="content.roleId!=null">
+							ar.role_id like '%${content.roleId}%' AND
+						</if>
+						<if test="content.identityNumber!=null">
+							ar.identity_number like '%${content.identityNumber}%' AND
+						</if>
+						<if test="content.identityName!=null">
+							ar.identity_name like '%${content.identityName}%' AND
+						</if>
+						<if test="content.isAgreed!=null">
+							ar.is_agreed = #{content.isAgreed} AND
+						</if>
+					</if>
+					<if test="condition!=null">
+						<if test="condition.createLess!=null">
+							<![CDATA[
+								ar.ar_create_date <= #{condition.createLess} AND
+							]]>
+						</if>
+						<if test="condition.createGreater!=null">
+							<![CDATA[
+								ar.ar_create_date >= #{condition.createGreater} AND
+							]]>
+						</if>
+						<if test="condition.updateLess!=null">
+							<![CDATA[
+								ar.ar_update_date <= #{condition.updateGreater} AND
+							]]>
+						</if>
+						<if test="condition.updateGreater!=null">
+							<![CDATA[
+								ar.ar_update_date >= #{condition.updateGreater} AND
+							]]>
+						</if>
+					</if>
+				</trim>
+			</where>
+			<if test="pageData!=null and pageData.pageStart!=null and pageData.pageSize!=null">
+				LIMIT #{pageData.pageStart},#{pageData.pageSize}
+			</if>
+	</select>
+	
+	<select id="findCounts" parameterType="java.util.Map">
+		SELECT ar.ar_id arId, ar.identity_number identityNumber, ar.identity_name identityName, ar.identity_front identityFront,
+			ar.identity_tergal identityTergal, ar.is_agreed isAgreed, ar.ar_cause arCause, ar.ar_create_date arCreateDate,
+			ar.ar_update_date arUpdateDate, 
+			u.user_id userId,u.u_account uAccount, u.u_nick uNick, u.u_head_port uHeadPort,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate,
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, 
+			r.r_create_date rCreateDate, r.r_update_date rUpdateDate
+			FROM apply_role ar
+			LEFT JOIN user u ON ar.user_id = u.user_id
+			LEFT JOIN role r ON ar.role_id = r.role_id
+			<where>
+				<trim  suffixOverrides=" AND">
+					<if test="content!=null">
+						<if test="content.arId!=null">
+							ar.ar_id like '%${content.arId}%' AND
+						</if>
+						<if test="content.userId!=null">
+							ar.user_id like '%${content.userId}%' AND
+						</if>
+						<if test="content.roleId!=null">
+							ar.role_id like '%${content.roleId}%' AND
+						</if>
+						<if test="content.identityNumber!=null">
+							ar.identity_number like '%${content.identityNumber}%' AND
+						</if>
+						<if test="content.identityName!=null">
+							ar.identity_name like '%${content.identityName}%' AND
+						</if>
+						<if test="content.isAgreed!=null">
+							ar.is_agreed = #{content.isAgreed} AND
+						</if>
+					</if>
+					<if test="condition!=null">
+						<if test="condition.createLess!=null">
+							<![CDATA[
+								ar.ar_create_date <= #{condition.createLess} AND
+							]]>
+						</if>
+						<if test="condition.createGreater!=null">
+							<![CDATA[
+								ar.ar_create_date >= #{condition.createGreater} AND
+							]]>
+						</if>
+						<if test="condition.updateLess!=null">
+							<![CDATA[
+								ar.ar_update_date <= #{condition.updateGreater} AND
+							]]>
+						</if>
+						<if test="condition.updateGreater!=null">
+							<![CDATA[
+								ar.ar_update_date >= #{condition.updateGreater} AND
+							]]>
+						</if>
+					</if>
+				</trim>
+			</where>
+	</select>
+	
+	
+</mapper>

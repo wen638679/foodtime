@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wen.ftproject.entity.Identity">
+	<resultMap type="com.wen.ftproject.entity.Identity" id="identityMapper">
+		<id property="identityId" column="identity_id"/>
+		<result property="identityNumber" column="identity_number"/>
+		<result property="identityName" column="identity_name"/>
+		<result property="identityFront" column="identity_front"/>
+		<result property="identityTergal" column="identity_tergal"/>
+		<result property="iCreateDate" column="i_create_date"/>
+		<result property="iUpdateDate" column="i_update_date"/>
+	</resultMap>
+	
+	<sql id="key">
+		<trim suffixOverrides=",">
+			<if test="identityId!=null">
+				identity_id,
+			</if>	
+			<if test="identityNumber!=null">
+				identity_number,
+			</if>
+			<if test="identityName!=null">
+				identity_name,
+			</if>
+			<if test="identityFront!=null">
+				identity_front,
+			</if>
+			<if test="identityTergal!=null">
+				identity_tergal
+			</if>
+			<if test="iCreateDate!=null">
+				i_create_date,
+			</if>
+			<if test="iUpdateDate!=null">
+				i_update_date,
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="value">
+		<trim suffixOverrides=",">
+			<if test="identityId!=null">
+				#{identityId},
+			</if>
+			<if test="identityNumber!=null">
+				#{identityNumber},
+			</if>
+			<if test="identityName!=null">
+				#{identityName},
+			</if>
+			<if test="identityFront!=null">
+				#{identityFront},
+			</if>
+			<if test="identityTergal!=null">
+				#{identityTergal},
+			</if>
+			<if test="iCreateDate!=null">
+				#{iCreateDate},
+			</if>
+			<if test="iUpdateDate!=null">
+				#{iUpdateDate},
+			</if>
+		</trim>
+	</sql>
+	
+	<insert id="insert" parameterType="com.wen.ftproject.entity.Identity">
+		INSERT INTO identity(<include refid="key"/>) VALUES(<include refid="value"/>)
+	</insert>
+	
+	<delete id="deleteById" parameterType="java.io.Serializable">
+		DELETE FROM identity WHERE identity_id=#{id}
+	</delete>
+	
+	<delete id="deleteByIds" parameterType="java.util.Map">
+		DELETE FROM identity
+		<where>
+			identity_id IN
+			<foreach collection="ids" open="(" close=")" separator="," item="id">
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+	
+	<delete id="deleteAll">
+		DELETE FROM identity
+	</delete>
+	
+	<delete id="deleteByName" parameterType="java.io.Serializable">
+		DELETE FROM identity WHERE identity_name=#{identityName}
+	</delete>
+	
+	<delete id="deleteBynNumber" parameterType="java.util.Map">
+		DELETE FROM identity WHERE identity_number=#{identityNumber}
+	</delete>
+	
+	<update id="updateById" parameterType="com.wen.ftproject.entity.Identity">
+		UPDATE identity
+			<set>
+				<trim suffixOverrides=",">
+					<if test="identityNubmer!=null">
+						idenity_number=#{identityNumber},
+					</if>
+					<if test="identityName!=null">
+						identity_name=#{identityName},
+					</if>
+					<if test="identityFront!=null">
+						identity_front=#{identityFront},
+					</if>
+					<if test="identityTergal!=null">
+						identity_tergal=#{identityTergal},
+					</if>
+					<if test="iUpdateDate!=null">
+						i_update_date=#{iUpdateDate},
+					</if>
+				</trim>
+			</set>
+			<where>
+				identity_id=#{identityId}
+			</where>
+	</update>
+	
+	<update id="updateByNumber" parameterType="com.wen.ftproject.entity.Identity">
+		UPDATE identity
+			<set>
+				<trim suffixOverrides=",">
+					<if test="identityName!=null">
+						identity_name=#{identityName},
+					</if>
+					<if test="identityFront!=null">
+						identity_front=#{identityFront},
+					</if>
+					<if test="identityTergal!=null">
+						identity_tergal=#{identityTergal},
+					</if>
+					<if test="iUpdateDate!=null">
+						i_update_date=#{iUpdateDate},
+					</if>
+				</trim>
+			</set>
+			<where>
+				identity_number=#{identityNumber}
+			</where>
+	</update>
+	
+	<select id="findAll" resultMap="identityMapper">
+		SELECT identity_id identityId, identity_number identityNumber, identity_name identityName,
+			identity_front identityFront, identity_tergal identityTergal, i_create_date iCreateDate, i_update_date iUpdateDate
+			FROM identity
+	</select>
+	
+	<select id="findById" resultMap="identityMapper" parameterType="java.io.Serializable">
+		SELECT identity_id identityId, identity_number identityNumber, identity_name identityName,
+			identity_front identityFront, identity_tergal identityTergal, i_create_date iCreateDate, i_update_date iUpdateDate
+			FROM identity
+			WHERE identity_id = #{id}
+	</select>
+	
+	<select id="findByIds" resultMap="identityMapper" parameterType="java.util.Map">
+		SELECT identity_id identityId, identity_number identityNumber, identity_name identityName,
+			identity_front identityFront, identity_tergal identityTergal, i_create_date iCreateDate, i_update_date iUpdateDate
+			FROM identity
+			<where>
+				identity_id IN
+				<foreach collection="ids" open="(" close=")" separator="," item="id">
+					#{id}
+				</foreach>
+			</where>
+	</select>
+	
+	<select id="findByNumber" resultMap="identityMapper" parameterType="java.io.Serializable">
+		SELECT identity_id identityId, identity_number identityNumber, identity_name identityName,
+			identity_front identityFront, identity_tergal identityTergal, i_create_date iCreateDate, i_update_date iUpdateDate
+			FROM identity
+			WHERE identity_number = #{number}
+	</select>
+	
+	<select id="findByNumbers" resultMap="identityMapper" parameterType="java.util.Map">
+		SELECT identity_id identityId, identity_number identityNumber, identity_name identityName,
+			identity_front identityFront, identity_tergal identityTergal, i_create_date iCreateDate, i_update_date iUpdateDate
+			FROM identity
+			<where>
+				identity_number IN
+				<foreach collection="numbers" open="(" close=")" separator="," item="number">
+					#{number}
+				</foreach>
+			</where>
+	</select>
+	
+	<select id="findByName" resultMap="identityMapper" parameterType="java.io.Serializable">
+		SELECT identity_id identityId, identity_number identityNumber, identity_name identityName,
+			identity_front identityFront, identity_tergal identityTergal, i_create_date iCreateDate, i_update_date iUpdateDate
+			FROM identity
+			WHERE identity_name = #{name}
+	</select>
+	
+	<select id="findByPages" resultMap="identityMapper" parameterType="java.util.Map">
+		SELECT identity_id identityId, identity_number identityNumber, identity_name identityName,
+			identity_front identityFront, identity_tergal identityTergal, i_create_date iCreateDate, i_update_date iUpdateDate
+			FROM identity
+			<where>
+				<trim  suffixOverrides=" AND">
+					<if test="content!=null">
+						<if test="content.identityId!=null">
+							identity_id like '%${content.identityId}%'
+						</if>
+						<if test="content.identityNumber!=null">
+							identity_number like '%${content.identityNumber}%' AND
+						</if>
+						<if test="content.identityName!=null">
+							identity_name like '%${content.identityName}%' AND
+						</if>
+					</if>
+					<if test="condition!=null">
+						<if test="condition.createLess!=null">
+							<![CDATA[
+								i_create_date <= #{condition.createLess} AND
+							]]>
+						</if>
+						<if test="condition.createGreater!=null">
+							<![CDATA[
+								i_create_date >= #{condition.createGreater} AND
+							]]>
+						</if>
+						<if test="condition.updateLess!=null">
+							<![CDATA[
+								i_update_date <= #{condition.updateGreater} AND
+							]]>
+						</if>
+						<if test="condition.updateGreater!=null">
+							<![CDATA[
+								i_update_date >= #{condition.updateGreater} AND
+							]]>
+						</if>
+					</if>
+				</trim>
+			</where>
+			<if test="pageData!=null and pageData.pageStart!=null and pageData.pageSize!=null">
+				LIMIT #{pageData.pageStart},#{pageData.pageSize}
+			</if>
+	</select>
+	
+	<select id="findCounts" parameterType="java.util.Map">
+		SELECT COUNT(*) FROM (
+			SELECT identity_id FROM identity
+				<where>
+					<trim  suffixOverrides=" AND">
+						<if test="content!=null">
+							<if test="content.identityId!=null">
+								identity_id like '%${content.identityId}%'
+							</if>
+							<if test="content.identityNumber!=null">
+								identity_number like '%${content.identityNumber}%' AND
+							</if>
+							<if test="content.identityName!=null">
+								identity_name like '%${content.identityName}%' AND
+							</if>
+						</if>
+						<if test="condition!=null">
+							<if test="condition.createLess!=null">
+								<![CDATA[
+									i_create_date <= #{condition.createLess} AND
+								]]>
+							</if>
+							<if test="condition.createGreater!=null">
+								<![CDATA[
+									i_create_date >= #{condition.createGreater} AND
+								]]>
+							</if>
+							<if test="condition.updateLess!=null">
+								<![CDATA[
+									i_update_date <= #{condition.updateGreater} AND
+								]]>
+							</if>
+							<if test="condition.updateGreater!=null">
+								<![CDATA[
+									i_update_date >= #{condition.updateGreater} AND
+								]]>
+							</if>
+						</if>
+					</trim>
+				</where>
+		) ide;
+	</select>
+	
+</mapper>

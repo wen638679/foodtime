@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wen.ftproject.entity.User">
+	<resultMap type="com.wen.ftproject.entity.User" id="userMapper">
+		<id property="userId" column="user_id"/>
+		<result property="uAccount" column="u_account"/>
+		<result property="uPassword" column="u_password"/>
+		<result property="uNike" column="u_nike"/>
+		<result property="uHeadPart" column="u_head_part"/>
+		<result property="uAddress" column="u_address"/>
+		<result property="roleId" column="role_id"/>
+		<result property="identity_id" column="identity_id"/>
+		<result property="uCreateDate" column="u_create_date"/>
+		<result property="uUpdateDate" column="u_update_date"/>
+		<association property="role" resultMap="com.wen.ftproject.entity.Role.roleMapper"/>
+		<association property="identity" resultMap="com.wen.ftproject.entity.Identity.identityMapper"/>
+	</resultMap>
+	
+	<sql id="key">
+		<trim suffixOverrides=",">
+			<if test="userId!=null">
+				user_id,
+			</if>
+			<if test="uAccount!=null">
+				u_account,
+			</if>
+			<if test="uPassword!=null">
+				u_password,
+			</if>
+			<if test="uNike!=null">
+				u_nike,
+			</if>
+			<if test="uHeadPart!=null">
+				u_head_part,
+			</if>
+			<if test="uAddress!=null">
+				u_address,
+			</if>
+			<if test="roleId!=null">
+				role_id,
+			</if>
+			<if test="identityId!=null">
+				identity_id,
+			</if>
+			<if test="uCreateDate!=null">
+				u_create_date,
+			</if>
+			<if test="uUpdateDate!=null">
+				u_update_date,
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="value">
+		<trim suffixOverrides=",">
+			<if test="userId!=null">
+				#{userId},
+			</if>
+			<if test="uAccount!=null">
+				#{uAccount},
+			</if>
+			<if test="uPassword!=null">
+				#{uPassword},
+			</if>
+			<if test="uNike!=null">
+				#{uNike},
+			</if>
+			<if test="uHeadPart!=null">
+				#{uHeadPart},
+			</if>
+			<if test="uAddress!=null">
+				#{uAddress},
+			</if>
+			<if test="roleId!=null">
+				#{roleId},
+			</if>
+			<if test="identityId!=null">
+				#{identityId},
+			</if>
+			<if test="uCreateDate!=null">
+				#{uCreateDate},
+			</if>
+			<if test="uUpdateDate!=null">
+				#{uUpdateDate},
+			</if>
+		</trim>
+	</sql>
+	
+	<insert id="insert" parameterType="com.wen.ftproject.entity.User">
+		INSERT INTO user(<include refid="key"/>) VALUES(<include refid="value"/>);
+	</insert>
+	
+	<update id="updateById" parameterType="com.wen.ftproject.entity.User">
+		UPDATE user
+			<set>
+				<trim suffixOverrides=",">
+					<if test="uAccount!=null">
+						u_account=#{uAccount},
+					</if>
+					<if test="uNike!=null">
+						u_nike=#{uNike},
+					</if>
+					<if test="uHeadPart!=null">
+						u_head_part=#{uHeadPart},
+					</if>
+					<if test="uAddress!=null">
+						u_address=#{uAddress},
+					</if>
+					<if test="roleId!=null">
+						role_id=#{roleId},
+					</if>
+					<if test="identityId!=null">
+						identity_id=#{identityId},
+					</if>
+					<if test="uUpdateDate!=null">
+						u_update_date=#{uUpdateDate},
+					</if>
+				</trim>
+			</set>
+			<where>
+				<if test="userId!=null">
+					user_id=#{userId}
+				</if>
+			</where>
+	</update>
+	
+	<update id="updateByAccount"  parameterType="com.wen.ftproject.entity.User">
+		UPDATE user
+			<set>
+				<trim suffixOverrides=",">
+					<if test="uNike!=null">
+						u_nike=#{uNike},
+					</if>
+					<if test="uHeadPart!=null">
+						u_head_part=#{uHeadPart},
+					</if>
+					<if test="uAddress!=null">
+						u_address=#{uAddress},
+					</if>
+					<if test="roleId!=null">
+						role_id=#{roleId},
+					</if>
+					<if test="identityId!=null">
+						identity_id=#{identityId},
+					</if>
+					<if test="uUpdateDate!=null">
+						u_update_date=#{uUpdateDate},
+					</if>
+				</trim>
+			</set>
+			<where>
+				<if test="uAccount!=null">
+					u_account=#{uAccount}
+				</if>
+			</where>
+	</update>
+	
+	<update id="updatePassword" parameterType="com.wen.ftproject.entity.User">
+		UPDATE user
+			<set>
+				<if test="uPassword!=null">
+					u_password=#{uPassword}
+				</if>
+			</set>
+			<where>
+				<trim suffixOverrides=" AND">
+					<if test="userId!=null">
+						user_id=#{userId} AND
+					</if>
+					<if test="uAccount!=null">
+						uAccount=#{uAccount} AND
+					</if>
+				</trim>
+			</where>
+	</update>
+	
+	<delete id="deleteById" parameterType="java.io.Serializable">
+		DELETE FROM user WHERE userId=#{id}
+	</delete>
+	
+	<delete id="deleteByAccount" parameterType="java.io.Serializable">
+		DELETE FROM user WHERE uAccount=#{account}
+	</delete>
+	
+	<delete id="deleteAll">
+		DELETE FROM user;
+	</delete>
+	
+	<delete id="deleteByIds" parameterType="java.io.Serializable">
+		DELETE FROM user
+			<where>
+				user_id IN
+				<foreach collection="ids" open="(" close=")" separator="," item="id">
+					#{id}
+				</foreach>
+			</where>
+	</delete>
+	
+	<delete id="deleteByAccounts" parameterType="java.io.Serializable">
+		DELETE FROM user
+			<where>
+				u_account IN
+				<foreach collection="accounts" open="(" close=")" separator="," item="account">
+					#{account}
+				</foreach>
+			</where>
+	</delete>
+	
+	<select id="findAll" resultMap="userMapper">
+		SELECT u.user_id userId, u.u_account uAccount, u.u_nike uNike, u.u_head_part uHeadPart, u.u_address uAddress,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate, 
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, r.r_create_date rCreateDate, r.r_update_date rUpdateDate,
+			i.identity_id, i.identity_number identityNumber, i.identity_name identityName, i.identity_front identityFront,
+			i.identity_tergal identityTergal, i.i_create_date iCreateDate, i.i_update_date iUpdateDate
+			FROM user u
+			LEFT JOIN role r ON u.role_id=r.role_id
+			LEFT JOIN identity i ON u.identity_id=i.identity_id
+	</select>
+	
+	<select id="findById" resultMap="userMapper" parameterType="java.io.Serializable">
+		SELECT u.user_id userId, u.u_account uAccount, u.u_nike uNike, u.u_head_part uHeadPart, u.u_address uAddress,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate, 
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, r.r_create_date rCreateDate, r.r_update_date rUpdateDate,
+			i.identity_id, i.identity_number identityNumber, i.identity_name identityName, i.identity_front identityFront,
+			i.identity_tergal identityTergal, i.i_create_date iCreateDate, i.i_update_date iUpdateDate
+			FROM user u
+			LEFT JOIN role r ON u.role_id=r.role_id
+			LEFT JOIN identity i ON u.identity_id=i.identity_id
+			<where>
+				u.user_id=#{id}
+			</where>
+	</select>
+	
+	<select id="findByIds" resultMap="userMapper" parameterType="java.io.Serializable">
+		SELECT u.user_id userId, u.u_account uAccount, u.u_nike uNike, u.u_head_part uHeadPart, u.u_address uAddress,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate, 
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, r.r_create_date rCreateDate, r.r_update_date rUpdateDate,
+			i.identity_id, i.identity_number identityNumber, i.identity_name identityName, i.identity_front identityFront,
+			i.identity_tergal identityTergal, i.i_create_date iCreateDate, i.i_update_date iUpdateDate
+			FROM user u
+			LEFT JOIN role r ON u.role_id=r.role_id
+			LEFT JOIN identity i ON u.identity_id=i.identity_id
+			<where>
+				user_id IN
+				<foreach collection="ids" open="(" close=")" separator="," item="id">
+					#{id}
+				</foreach>
+			</where>
+	</select>
+	
+	<select id="findByAccount" resultMap="userMapper" parameterType="java.io.Serializable">
+		SELECT u.user_id userId, u.u_account uAccount, u.u_nike uNike, u.u_head_part uHeadPart, u.u_address uAddress,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate, 
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, r.r_create_date rCreateDate, r.r_update_date rUpdateDate,
+			i.identity_id, i.identity_number identityNumber, i.identity_name identityName, i.identity_front identityFront,
+			i.identity_tergal identityTergal, i.i_create_date iCreateDate, i.i_update_date iUpdateDate
+			FROM user u
+			LEFT JOIN role r ON u.role_id=r.role_id
+			LEFT JOIN identity i ON u.identity_id=i.identity_id
+			<where>
+				u_account like '%${uAccount}%'
+			</where>
+	</select>
+	
+	<select id="findByAccounts" resultMap="userMapper" parameterType="java.io.Serializable">
+		SELECT u.user_id userId, u.u_account uAccount, u.u_nike uNike, u.u_head_part uHeadPart, u.u_address uAddress,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate, 
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, r.r_create_date rCreateDate, r.r_update_date rUpdateDate,
+			i.identity_id, i.identity_number identityNumber, i.identity_name identityName, i.identity_front identityFront,
+			i.identity_tergal identityTergal, i.i_create_date iCreateDate, i.i_update_date iUpdateDate
+			FROM user u
+			LEFT JOIN role r ON u.role_id=r.role_id
+			LEFT JOIN identity i ON u.identity_id=i.identity_id
+			<where>
+				<trim suffixOverrides=" OR">
+					<foreach collection="accounts" open="" close="" separator="" item="account">
+						u_account like '%${account}%' OR
+					</foreach>
+				</trim>
+			</where>
+	</select>
+	
+	
+	<select id="findByPages" resultMap="userMapper" parameterType="java.util.Map">
+		SELECT u.user_id userId, u.u_account uAccount, u.u_nike uNike, u.u_head_part uHeadPart, u.u_address uAddress,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate, 
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, r.r_create_date rCreateDate, r.r_update_date rUpdateDate,
+			i.identity_id, i.identity_number identityNumber, i.identity_name identityName, i.identity_front identityFront,
+			i.identity_tergal identityTergal, i.i_create_date iCreateDate, i.i_update_date iUpdateDate
+			FROM user u
+			LEFT JOIN role r ON u.role_id=r.role_id
+			LEFT JOIN identity i ON u.identity_id=i.identity_id
+			<where>
+				<trim suffixOverrides=",">
+					<if test="content!=null">
+						
+					</if>
+					<if test="condition!=null">
+					
+					</if>
+				</trim>
+			</where>
+	</select>
+	
+	
+	<select id="findByAP" resultMap="userMapper" parameterType="com.wen.ftproject.entity.User">
+		ELECT u.user_id userId, u.u_account uAccount, u.u_nike uNike, u.u_head_part uHeadPart, u.u_address uAddress,
+			u.u_create_date uCreateDate, u.u_update_date uUpdateDate, 
+			r.role_id roleId, r.r_name rName, r.r_descript rDescript, r.r_create_date rCreateDate, r.r_update_date rUpdateDate,
+			i.identity_id, i.identity_number identityNumber, i.identity_name identityName, i.identity_front identityFront,
+			i.identity_tergal identityTergal, i.i_create_date iCreateDate, i.i_update_date iUpdateDate
+			FROM user u
+			LEFT JOIN role r ON u.role_id=r.role_id
+			LEFT JOIN identity i ON u.identity_id=i.identity_id
+			<where>
+				u_account=#{uAccount} AND u_password=#{uPassword}
+			</where>
+	</select>
+	
+	
+</mapper>

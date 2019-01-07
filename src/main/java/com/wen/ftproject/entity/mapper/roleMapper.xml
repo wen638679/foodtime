@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wen.ftproject.entity.Role">
+	<resultMap type="com.wen.ftproject.entity.Role" id="roleMapper">
+		<id property="roleId" column="role_id"/>
+		<result property="rName" column="r_name"/>
+		<result property="rDescript" column="r_descript"/>
+		<result property="rCreateDate" column="r_create_date"/>
+		<result property="rUpdateDate" column="r_update_date"/>
+	</resultMap>
+	
+	<sql id="key">
+		<trim suffixOverrides=",">
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="rName != null">
+				r_name,
+			</if>
+			<if test="rDescript != null">
+				r_descript,
+			</if>
+			<if test="rCreateDate != null">
+				r_create_date,
+			</if>
+			<if test="rUpdateDate">
+				r_update_date,
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="value">
+		<trim suffixOverrides=",">
+			<if test="roleId != null">
+				#{roleId},
+			</if>
+			<if test="rName != null">
+				#{rName},
+			</if>
+			<if test="rDescript != null">
+				#{rDescript},
+			</if>
+			<if test="rCreateDate != null">
+				#{rCreateDate},
+			</if>
+			<if test="rUpdateDate">
+				#{rUpdateDate},
+			</if>
+		</trim>
+	</sql>
+	
+	<insert id="insert" parameterType="com.wen.ftproject.entity.Role">
+		INSERT INTO role(<include refid="key"/>) VALUES(<include refid="value"/>)
+	</insert>
+	
+	<delete id="deleteById" parameterType="java.io.Serializable">
+		DELETE FROM role WHERE role_id=#{roleId}
+	</delete>
+	
+	<delete id="deleteByName" parameterType="java.io.Serializable">
+		DELETE FROM role WHERE r_name=#{rName}
+	</delete>
+	
+	<delete id="deleteAll">
+		DELETE FROM role;
+	</delete>
+	
+	<delete id="deleteByIds" parameterType="java.util.Map">
+		DELETE FROM role WHERE role_id IN
+			<foreach collection="ids" open="(" close=")" separator="," item="id">
+				#{id}
+			</foreach>
+	</delete>
+	
+	<update id="updateById" parameterType="java.io.Serializable">
+		UPDATE role
+			<set>
+				<trim suffixOverrides=",">
+					<if test="rName!=null">
+						r_name=#{rName},
+					</if>
+					<if test="rDescript!=null">
+						r_descript=#{rDescript},
+					</if>
+					<if test="rUpdateDate!=null">
+						r_update_date=#{rUpdateDate},
+					</if>
+				</trim>
+			</set>
+			<where>
+				<if test="roleId!=null">
+					role_id=#{roleId}
+				</if>
+			</where>
+	</update>
+	
+	<select id="findAll" resultMap="roleMapper">
+		SELECT role_id roleId, r_name rName, r_descript rDescript, r_create_date rCreateDate, r_update_date rUpdateDate
+			FROM role
+	</select>
+	
+	<select id="findById" parameterType="java.io.Serializable" resultMap="roleMapper">
+		SELECT role_id roleId, r_name rName, r_descript rDescript, r_create_date rCreateDate, r_update_date rUpdateDate
+			FROM role
+			WHERE role_id=#{roleId}
+	</select>
+	
+	<select id="findByIds" parameterType="java.io.Serializable" resultMap="roleMapper">
+		SELECT role_id roleId, r_name rName, r_descript rDescript, r_create_date rCreateDate, r_update_date rUpdateDate
+			FROM role
+			<where>
+				role_id IN 
+				<foreach collection="ids" open="(" close=")" separator="," item="id">
+					#{id}
+				</foreach>
+			</where>
+	</select>
+	
+	<select id="findByPages" parameterType="java.util.Map" resultMap="roleMapper">
+		SELECT role_id roleId, r_name rName, r_descript rDescript, r_create_date rCreateDate, r_update_date rUpdateDate
+			FROM role
+			<where>
+				<trim suffixOverrides=" AND">
+					<if test="content!=null">
+						<if test="content.rName!=null">
+							r_name like '%${content.rName}%' AND
+						</if>
+						<if test="content.rDescript!=null">
+							r_descript like '%${content.rDescript}%' AND
+						</if>
+					</if>
+					<if test="condition!=null">
+						<if test="condition.createLess!=null">
+							<![CDATA[
+								r_create_date <= #{condition.createLess} AND
+							]]>
+						</if>
+						<if test="condition.createGreater!=null">
+							<![CDATA[
+								r_create_date >= #{condition.createGreater} AND
+							]]>
+						</if>
+						<if test="condition.updateLess!=null">
+							<![CDATA[
+								r_update_date <= #{condition.updateLess} AND
+							]]>
+						</if>
+						<if test="condition.updateGreater!=null">
+							<![CDATA[
+								r_update_date >= #{condition.updateGreater} AND
+							]]>
+						</if>
+					</if>
+				</trim>
+			</where>
+			<if test="pageData!=null">
+				<if test="pageData.pageStart!=null and pageData.pageSize!=null">
+					limit #{pageData.pageStart},#{pageData.pageSize}
+				</if>
+			</if>
+	</select>
+	
+	<select id="findCounts" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) FROM (
+			SELECT role_id FROM role
+				<where>
+					<trim suffixOverrides=" AND">
+						<if test="content!=null">
+							<if test="content.rName!=null">
+								r_name like '%${content.rName}%' AND
+							</if>
+							<if test="content.rDescript!=null">
+								r_descript like '%${content.rDescript}%' AND
+							</if>
+						</if>
+						<if test="condition!=null">
+							<if test="condition.createLess!=null">
+								<![CDATA[
+									r_create_date <= #{condition.createLess} AND
+								]]>
+							</if>
+							<if test="condition.createGreater!=null">
+								<![CDATA[
+									r_create_date >= #{condition.createGreater} AND
+								]]>
+							</if>
+							<if test="condition.updateLess!=null">
+								<![CDATA[
+									r_update_date <= #{condition.updateLess} AND
+								]]>
+							</if>
+							<if test="condition.updateGreater!=null">
+								<![CDATA[
+									r_update_date >= #{condition.updateGreater} AND
+								]]>
+							</if>
+						</if>
+					</trim>
+				</where>
+		) r;
+	</select>
+</mapper>
