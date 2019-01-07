@@ -10,7 +10,7 @@ import com.wen.ftproject.entity.User;
 
 @Repository("userDao")
 public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao{
-
+	
 	public UserDaoImpl() {
 		// TODO Auto-generated constructor stub
 		super.setNs(User.class.getName());

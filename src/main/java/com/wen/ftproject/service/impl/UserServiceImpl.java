@@ -6,14 +6,15 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.http.util.TextUtils;
+import org.springframework.stereotype.Service;
 
-import com.wen.ftproject.dao.BaseDao;
 import com.wen.ftproject.dao.UserDao;
 import com.wen.ftproject.entity.User;
 import com.wen.ftproject.result.Result;
 import com.wen.ftproject.service.UserService;
 import com.wen.ftproject.utils.Constants;
 
+@Service("userService")
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService{
 
 	@Resource(name="userDao")
